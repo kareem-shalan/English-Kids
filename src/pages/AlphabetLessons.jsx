@@ -62,10 +62,10 @@ const AlphabetLessons = () => {
       image: '⚽',
       description: 'B is for Ball - let\'s play and have fun!',
       missingLetterWords: [
-        { word: 'O_K', answer: 'B', fullWord: 'BOOK', emoji: '📚' },
-        { word: 'I_D', answer: 'B', fullWord: 'BIRD', emoji: '🐦' },
-        { word: 'E_R', answer: 'B', fullWord: 'BEAR', emoji: '🐻' },
-        { word: 'A_G', answer: 'B', fullWord: 'BAG', emoji: '👜' }
+        { word: 'B_OK', answer: 'O', fullWord: 'BOOK', emoji: '📚' },
+        { word: 'B_IRD', answer: 'I', fullWord: 'BIRD', emoji: '🐦' },
+        { word: 'B_EAR', answer: 'E', fullWord: 'BEAR', emoji: '🐻' },
+        { word: 'B_AG', answer: 'A', fullWord: 'BAG', emoji: '��' }
       ]
     },
     {
@@ -78,10 +78,10 @@ const AlphabetLessons = () => {
       image: '🐱',
       description: 'C is for Cat - a furry friend that purrs!',
       missingLetterWords: [
-        { word: 'A_T', answer: 'C', fullWord: 'CAT', emoji: '🐱' },
-        { word: 'A_R', answer: 'C', fullWord: 'CAR', emoji: '🚗' },
-        { word: 'A_K', answer: 'C', fullWord: 'CAKE', emoji: '🎂' },
-        { word: 'O_W', answer: 'C', fullWord: 'COW', emoji: '🐮' }
+        { word: 'C_AT', answer: 'A', fullWord: 'CAT', emoji: '🐱' },
+        { word: 'C_AR', answer: 'A', fullWord: 'CAR', emoji: '🚗' },
+        { word: 'C_AKE', answer: 'A', fullWord: 'CAKE', emoji: '🎂' },
+        { word: 'C_OW', answer: 'O', fullWord: 'COW', emoji: '🐮' }
       ]
     },
     {
@@ -454,9 +454,9 @@ const AlphabetLessons = () => {
     }
   ]
 
-  const playSound = (phonics) => {
+  const playSound = (word) => {
     if ('speechSynthesis' in window) {
-      const utterance = new SpeechSynthesisUtterance(phonics)
+      const utterance = new SpeechSynthesisUtterance(word)
       utterance.rate = 0.7
       utterance.pitch = 1.2
       speechSynthesis.speak(utterance)
@@ -711,7 +711,7 @@ const AlphabetLessons = () => {
                 {letterData.letter}
               </div>
               <div className="text-xl sm:text-2xl">{letterData.image}</div>
-
+              
               {selectedLetter?.letter === letterData.letter && (
                 <motion.div
                   initial={{ scale: 0 }}
@@ -757,11 +757,11 @@ const AlphabetLessons = () => {
 
                   <div className="text-4xl sm:text-6xl mb-4">{selectedLetter.image}</div>
                   <p className="text-lg sm:text-xl text-gray-600 mb-4">{selectedLetter.description}</p>
-
+                  
                   <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    onClick={() => playSound(selectedLetter.phonics)}
+                    onClick={() => playSound(selectedLetter.letter)}
                     className="flex items-center justify-center mx-auto bg-gradient-to-r from-green-400 to-green-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full font-bold text-base sm:text-lg shadow-lg hover:shadow-xl transition-all duration-300"
                   >
                     <Volume2 className="w-4 h-4 sm:w-6 sm:h-6 mr-2" />
@@ -785,7 +785,7 @@ const AlphabetLessons = () => {
                 <h3 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-6">
                   Words that start with {selectedLetter.letter}:
                 </h3>
-
+                
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
                   {selectedLetter.words.map((word, index) => (
                     <motion.div
@@ -794,7 +794,7 @@ const AlphabetLessons = () => {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.1 }}
                       whileHover={{ scale: 1.05, y: -5 }}
-                      onClick={() => playSound(word.split(' ')[0])}
+                      onClick={() => playSound(word)}
                       className="bg-gradient-to-r from-purple-400 to-pink-400 rounded-2xl p-4 sm:p-6 cursor-pointer shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-white/30"
                     >
                       <div className="text-lg sm:text-2xl md:text-3xl font-bold text-white text-center">
