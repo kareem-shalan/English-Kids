@@ -66,7 +66,7 @@ const Home = () => {
             repeat: Infinity,
             ease: "easeInOut"
           }}
-          className="absolute top-20 left-10 text-6xl"
+          className="absolute top-10 sm:top-20 left-4 sm:left-10 text-4xl sm:text-6xl"
         >
           🌟
         </motion.div>
@@ -81,7 +81,7 @@ const Home = () => {
             repeat: Infinity,
             ease: "easeInOut"
           }}
-          className="absolute top-32 right-20 text-5xl"
+          className="absolute top-16 sm:top-32 right-4 sm:right-20 text-3xl sm:text-5xl"
         >
           🎈
         </motion.div>
@@ -96,7 +96,7 @@ const Home = () => {
             repeat: Infinity,
             ease: "easeInOut"
           }}
-          className="absolute bottom-40 left-20 text-4xl"
+          className="absolute bottom-20 sm:bottom-40 left-4 sm:left-20 text-3xl sm:text-4xl"
         >
           🌈
         </motion.div>
@@ -154,7 +154,7 @@ const Home = () => {
         {/* Feature Cards */}
         <motion.div
           variants={containerVariants}
-          className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8 px-4"
+          className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 px-4"
         >
           {features.map((feature, index) => {
             const Icon = feature.icon

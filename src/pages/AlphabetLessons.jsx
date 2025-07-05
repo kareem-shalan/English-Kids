@@ -263,7 +263,7 @@ const AlphabetLessons = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.3 }}
-          className="grid grid-cols-3 md:grid-cols-6 gap-4 mb-12"
+          className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 sm:gap-4 mb-12"
         >
           {alphabetData.map((letterData, index) => (
             <motion.div
@@ -319,7 +319,7 @@ const AlphabetLessons = () => {
                     key={selectedLetter.letter}
                     initial={{ rotateY: 180 }}
                     animate={{ rotateY: 0 }}
-                    className={`text-8xl md:text-9xl font-bold bg-gradient-to-r ${selectedLetter.color} bg-clip-text text-transparent mb-4`}
+                    className={`text-6xl sm:text-8xl md:text-9xl font-bold bg-gradient-to-r ${selectedLetter.color} bg-clip-text text-transparent mb-4`}
                   >
                     {selectedLetter.letter}
                   </motion.div>
@@ -328,9 +328,9 @@ const AlphabetLessons = () => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     onClick={() => playSound(selectedLetter.phonics)}
-                    className="flex items-center justify-center mx-auto bg-gradient-to-r from-green-400 to-green-600 text-white px-6 py-3 rounded-full font-bold text-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                    className="flex items-center justify-center mx-auto bg-gradient-to-r from-green-400 to-green-600 text-white px-4 sm:px-6 py-2 sm:py-3 rounded-full font-bold text-base sm:text-lg shadow-lg hover:shadow-xl transition-all duration-300"
                   >
-                    <Volume2 className="w-6 h-6 mr-2" />
+                    <Volume2 className="w-5 h-5 sm:w-6 sm:h-6 mr-2" />
                     Sound: {selectedLetter.sound}
                   </motion.button>
                 </div>
@@ -352,7 +352,7 @@ const AlphabetLessons = () => {
                   Words that start with {selectedLetter.letter}:
                 </h3>
                 
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
                   {selectedLetter.words.map((word, index) => (
                     <motion.div
                       key={index}
@@ -361,9 +361,9 @@ const AlphabetLessons = () => {
                       transition={{ delay: index * 0.1 }}
                       whileHover={{ scale: 1.05, y: -5 }}
                       onClick={() => playSound(word.split(' ')[0])}
-                      className="bg-gradient-to-r from-purple-400 to-pink-400 rounded-2xl p-6 cursor-pointer shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-white/30"
+                      className="bg-gradient-to-r from-purple-400 to-pink-400 rounded-2xl p-4 sm:p-6 cursor-pointer shadow-lg hover:shadow-xl transition-all duration-300 border-2 border-white/30"
                     >
-                      <div className="text-2xl md:text-3xl font-bold text-white text-center">
+                      <div className="text-lg sm:text-2xl md:text-3xl font-bold text-white text-center">
                         {word}
                       </div>
                     </motion.div>

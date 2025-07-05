@@ -276,7 +276,7 @@ const GrammarLessons = () => {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
           >
             {grammarTopics.map((topic, index) => {
               const progress = getTopicProgress(topic.id)
@@ -430,19 +430,19 @@ const GrammarLessons = () => {
               </div>
 
               {/* Navigation */}
-              <div className="flex justify-between items-center">
+              <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={prevLesson}
                   disabled={currentLessonIndex === 0}
-                  className={`px-6 py-3 rounded-full font-bold ${
+                  className={`px-4 sm:px-6 py-2 sm:py-3 rounded-full font-bold text-sm sm:text-base ${
                     currentLessonIndex === 0
                       ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                       : 'bg-blue-500 text-white hover:bg-blue-600'
                   } transition-all duration-200 flex items-center`}
                 >
-                  <ArrowLeft className="w-5 h-5 mr-2" />
+                  <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                   Previous
                 </motion.button>
 
@@ -450,9 +450,9 @@ const GrammarLessons = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => markLessonComplete(selectedTopic.id, currentLessonIndex)}
-                  className="bg-green-500 text-white px-8 py-3 rounded-full font-bold hover:bg-green-600 transition-all duration-200 flex items-center"
+                  className="bg-green-500 text-white px-6 sm:px-8 py-2 sm:py-3 rounded-full font-bold text-sm sm:text-base hover:bg-green-600 transition-all duration-200 flex items-center"
                 >
-                  <CheckCircle className="w-5 h-5 mr-2" />
+                  <CheckCircle className="w-4 h-4 sm:w-5 sm:h-5 mr-2" />
                   Mark Complete
                 </motion.button>
 
@@ -461,14 +461,14 @@ const GrammarLessons = () => {
                   whileTap={{ scale: 0.95 }}
                   onClick={nextLesson}
                   disabled={currentLessonIndex === selectedTopic.lessons.length - 1}
-                  className={`px-6 py-3 rounded-full font-bold ${
+                  className={`px-4 sm:px-6 py-2 sm:py-3 rounded-full font-bold text-sm sm:text-base ${
                     currentLessonIndex === selectedTopic.lessons.length - 1
                       ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                       : 'bg-blue-500 text-white hover:bg-blue-600'
                   } transition-all duration-200 flex items-center`}
                 >
                   Next
-                  <ArrowRight className="w-5 h-5 ml-2" />
+                  <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 ml-2" />
                 </motion.button>
               </div>
             </motion.div>

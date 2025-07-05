@@ -145,7 +145,7 @@ const VocabularyPractice = () => {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="grid md:grid-cols-3 gap-8"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
           >
             {categories.map((category, index) => (
               <motion.div
@@ -265,13 +265,13 @@ const VocabularyPractice = () => {
             </motion.div>
 
             {/* Navigation */}
-            <div className="flex justify-between items-center mt-8">
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mt-8">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={prevWord}
                 disabled={currentWordIndex === 0}
-                className={`px-8 py-4 rounded-full font-bold text-lg ${
+                className={`px-6 sm:px-8 py-3 sm:py-4 rounded-full font-bold text-base sm:text-lg ${
                   currentWordIndex === 0
                     ? 'bg-gray-400 text-gray-600 cursor-not-allowed'
                     : 'bg-white text-gray-800 hover:bg-gray-100'
@@ -284,16 +284,16 @@ const VocabularyPractice = () => {
                 <motion.button
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
-                  className="bg-green-500 text-white p-4 rounded-full shadow-lg"
+                  className="bg-green-500 text-white p-3 sm:p-4 rounded-full shadow-lg"
                 >
-                  <CheckCircle className="w-6 h-6" />
+                  <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6" />
                 </motion.button>
                 <motion.button
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
-                  className="bg-red-500 text-white p-4 rounded-full shadow-lg"
+                  className="bg-red-500 text-white p-3 sm:p-4 rounded-full shadow-lg"
                 >
-                  <XCircle className="w-6 h-6" />
+                  <XCircle className="w-5 h-5 sm:w-6 sm:h-6" />
                 </motion.button>
               </div>
 
@@ -302,7 +302,7 @@ const VocabularyPractice = () => {
                 whileTap={{ scale: 0.95 }}
                 onClick={nextWord}
                 disabled={currentWordIndex === selectedCategory.words.length - 1}
-                className={`px-8 py-4 rounded-full font-bold text-lg ${
+                className={`px-6 sm:px-8 py-3 sm:py-4 rounded-full font-bold text-base sm:text-lg ${
                   currentWordIndex === selectedCategory.words.length - 1
                     ? 'bg-gray-400 text-gray-600 cursor-not-allowed'
                     : 'bg-white text-gray-800 hover:bg-gray-100'

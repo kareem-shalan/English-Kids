@@ -174,7 +174,7 @@ const Curriculum = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="grid md:grid-cols-4 gap-6 mb-12"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-12"
         >
           {weeks.map((week, index) => {
             const weekProgress = getSessionProgress(week.number)
