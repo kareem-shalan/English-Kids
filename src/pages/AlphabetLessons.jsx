@@ -6,7 +6,7 @@ const AlphabetLessons = () => {
   const [selectedLetter, setSelectedLetter] = useState(null)
   const [currentLetterIndex, setCurrentLetterIndex] = useState(0)
   const [showMissingLetters, setShowMissingLetters] = useState(false)
-  const [missingLetterAnswer, setMissingLetterAnswer] = useState('')
+  const [missingLetterAnswers, setMissingLetterAnswers] = useState({})
 
   // Load state from localStorage on component mount
   useEffect(() => {
@@ -487,17 +487,29 @@ const AlphabetLessons = () => {
     }
   }
 
-  const handleMissingLetterAnswer = (answer) => {
-    setMissingLetterAnswer(answer)
+    const handleMissingLetterAnswer = (answer, wordKey) => {
+    setMissingLetterAnswers(prev => ({
+      ...prev,
+      [wordKey]: answer
+    }))
+    
     const isCorrect = answer === selectedLetter.letter
-
+    
     if (isCorrect) {
       setTimeout(() => {
-        setMissingLetterAnswer('')
+        setMissingLetterAnswers(prev => {
+          const newState = { ...prev }
+          delete newState[wordKey]
+          return newState
+        })
       }, 2000)
     } else {
       setTimeout(() => {
-        setMissingLetterAnswer('')
+        setMissingLetterAnswers(prev => {
+          const newState = { ...prev }
+          delete newState[wordKey]
+          return newState
+        })
       }, 1000)
     }
   }
@@ -523,6 +535,9 @@ const AlphabetLessons = () => {
             const randomWrongLetters = wrongLetters.sort(() => 0.5 - Math.random()).slice(0, 2)
             const letterChoices = [correctLetter, ...randomWrongLetters].sort(() => 0.5 - Math.random())
 
+                        const wordKey = `${selectedLetter.letter}_${wordData.word}`
+            const currentAnswer = missingLetterAnswers[wordKey]
+            
             return (
               <motion.div
                 key={wordData.word}
@@ -535,7 +550,7 @@ const AlphabetLessons = () => {
                 <div className="text-3xl font-bold text-white mb-4">
                   {wordData.word}
                 </div>
-
+                
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -545,28 +560,28 @@ const AlphabetLessons = () => {
                   <Volume2 className="w-5 h-5 mr-2" />
                   Listen to Word
                 </motion.button>
-
+                
                 <div className="grid grid-cols-3 gap-3">
                   {letterChoices.map((letter) => (
                     <motion.button
                       key={letter}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
-                      onClick={() => handleMissingLetterAnswer(letter)}
-                      disabled={missingLetterAnswer !== ''}
-                      className={`text-xl font-bold p-3 rounded-xl transition-all duration-200 ${missingLetterAnswer === letter
-                          ? letter === wordData.answer
-                            ? 'bg-green-500 text-white'
-                            : 'bg-red-500 text-white'
-                          : 'bg-white text-gray-800 hover:bg-gray-100'
-                        }`}
+                      onClick={() => handleMissingLetterAnswer(letter, wordKey)}
+                      disabled={currentAnswer !== undefined}
+                      className={`text-xl font-bold p-3 rounded-xl transition-all duration-200 ${currentAnswer === letter
+                        ? letter === wordData.answer
+                          ? 'bg-green-500 text-white'
+                          : 'bg-red-500 text-white'
+                        : 'bg-white text-gray-800 hover:bg-gray-100'
+                      }`}
                     >
                       {letter}
                     </motion.button>
                   ))}
                 </div>
-
-                {missingLetterAnswer === wordData.answer && (
+                
+                {currentAnswer === wordData.answer && (
                   <motion.div
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
