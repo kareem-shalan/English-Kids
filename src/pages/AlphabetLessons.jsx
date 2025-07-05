@@ -515,59 +515,142 @@ const AlphabetLessons = () => {
         </p>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          {selectedLetter.missingLetterWords.map((wordData, index) => (
+          {selectedLetter.missingLetterWords.map((wordData, index) => {
+            // Create 3 letter choices: correct answer + 2 random wrong letters
+            const correctLetter = wordData.answer
+            const allLetters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
+            const wrongLetters = allLetters.filter(letter => letter !== correctLetter)
+            const randomWrongLetters = wrongLetters.sort(() => 0.5 - Math.random()).slice(0, 2)
+            const letterChoices = [correctLetter, ...randomWrongLetters].sort(() => 0.5 - Math.random())
+
+            return (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.1 }}
+                className="bg-gradient-to-r from-purple-400 to-pink-400 rounded-2xl p-6 text-center shadow-lg border-2 border-white/30"
+              >
+                <div className="text-4xl mb-4">{wordData.emoji}</div>
+                <div className="text-3xl font-bold text-white mb-4">
+                  {wordData.word}
+                </div>
+                
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => playMissingLetterSound(wordData.word, wordData.answer)}
+                  className="bg-white/20 backdrop-blur-md text-white px-6 py-3 rounded-full font-bold text-lg mb-4 mx-auto flex items-center"
+                >
+                  <Volume2 className="w-5 h-5 mr-2" />
+                  Listen & Find Missing Letter
+                </motion.button>
+                
+                <div className="grid grid-cols-3 gap-3">
+                  {letterChoices.map((letter) => (
+                    <motion.button
+                      key={letter}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => handleMissingLetterAnswer(letter)}
+                      disabled={missingLetterAnswer !== ''}
+                      className={`text-xl font-bold p-3 rounded-xl transition-all duration-200 ${
+                        missingLetterAnswer === letter
+                          ? letter === wordData.answer
+                            ? 'bg-green-500 text-white'
+                            : 'bg-red-500 text-white'
+                          : 'bg-white text-gray-800 hover:bg-gray-100'
+                      }`}
+                    >
+                      {letter}
+                    </motion.button>
+                  ))}
+                </div>
+                
+                {missingLetterAnswer === wordData.answer && (
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    className="mt-4 text-green-300 font-bold text-lg"
+                  >
+                    ✅ Correct! {wordData.fullWord}
+                  </motion.div>
+                )}
+              </motion.div>
+            )
+          })}
+        </div>
+      </div>
+    )
+  }
+
+  const renderQuestionsSection = () => {
+    if (!selectedLetter) return null
+
+    const questions = [
+      {
+        question: `What sound does the letter ${selectedLetter.letter} make?`,
+        options: [
+          { text: selectedLetter.sound, correct: true },
+          { text: '/ə/', correct: false },
+          { text: '/ɑ/', correct: false },
+          { text: '/i/', correct: false }
+        ]
+      },
+      {
+        question: `Which word starts with the letter ${selectedLetter.letter}?`,
+        options: [
+          { text: selectedLetter.words[0], correct: true },
+          { text: 'Apple 🍎', correct: false },
+          { text: 'Ball ⚽', correct: false },
+          { text: 'Cat 🐱', correct: false }
+        ]
+      },
+      {
+        question: `What is the phonics sound for letter ${selectedLetter.letter}?`,
+        options: [
+          { text: selectedLetter.phonics, correct: true },
+          { text: 'ay', correct: false },
+          { text: 'bee', correct: false },
+          { text: 'see', correct: false }
+        ]
+      }
+    ]
+
+    return (
+      <div className="mt-8">
+        <h3 className="text-2xl sm:text-3xl font-bold text-gray-800 mb-6 text-center">
+          ❓ Letter Questions! ❓
+        </h3>
+        <p className="text-lg text-gray-600 mb-8 text-center">
+          Test your knowledge about the letter {selectedLetter.letter}!
+        </p>
+        
+        <div className="space-y-6">
+          {questions.map((questionData, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className="bg-gradient-to-r from-purple-400 to-pink-400 rounded-2xl p-6 text-center shadow-lg border-2 border-white/30"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: index * 0.2 }}
+              className="bg-gradient-to-r from-blue-400 to-indigo-400 rounded-2xl p-6 shadow-lg border-2 border-white/30"
             >
-              <div className="text-4xl mb-4">{wordData.emoji}</div>
-              <div className="text-3xl font-bold text-white mb-4">
-                {wordData.word}
-              </div>
+              <h4 className="text-xl font-bold text-white mb-4 text-center">
+                {questionData.question}
+              </h4>
               
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => playMissingLetterSound(wordData.word, wordData.answer)}
-                className="bg-white/20 backdrop-blur-md text-white px-6 py-3 rounded-full font-bold text-lg mb-4 mx-auto flex items-center"
-              >
-                <Volume2 className="w-5 h-5 mr-2" />
-                Listen & Find Missing Letter
-              </motion.button>
-              
-              <div className="grid grid-cols-2 gap-3">
-                {['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'].map((letter) => (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {questionData.options.map((option, optionIndex) => (
                   <motion.button
-                    key={letter}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => handleMissingLetterAnswer(letter)}
-                    disabled={missingLetterAnswer !== ''}
-                    className={`text-xl font-bold p-3 rounded-xl transition-all duration-200 ${
-                      missingLetterAnswer === letter
-                        ? letter === wordData.answer
-                          ? 'bg-green-500 text-white'
-                          : 'bg-red-500 text-white'
-                        : 'bg-white text-gray-800 hover:bg-gray-100'
-                    }`}
+                    key={optionIndex}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="bg-white/20 backdrop-blur-md text-white p-4 rounded-xl font-medium text-center hover:bg-white/30 transition-all duration-200"
                   >
-                    {letter}
+                    {option.text}
                   </motion.button>
                 ))}
               </div>
-              
-              {missingLetterAnswer === wordData.answer && (
-                <motion.div
-                  initial={{ scale: 0 }}
-                  animate={{ scale: 1 }}
-                  className="mt-4 text-green-300 font-bold text-lg"
-                >
-                  ✅ Correct! {wordData.fullWord}
-                </motion.div>
-              )}
             </motion.div>
           ))}
         </div>
@@ -710,6 +793,9 @@ const AlphabetLessons = () => {
 
               {/* Missing Letters Section */}
               {renderMissingLettersSection()}
+
+              {/* Questions Section */}
+              {renderQuestionsSection()}
 
               {/* Close Button */}
               <div className="text-center mt-6 sm:mt-8">
