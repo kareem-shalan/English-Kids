@@ -672,6 +672,84 @@ const AlphabetLessons = () => {
     )
   }
 
+  const renderIntroductionQuestions = () => {
+    const introQuestions = [
+      {
+        question: "🎵 Do you know how many letters are in the alphabet?",
+        answer: "26 letters!",
+        emoji: "🔤"
+      },
+      {
+        question: "🎨 What's your favorite color?",
+        answer: "Tell me about it!",
+        emoji: "🌈"
+      },
+      {
+        question: "🐾 Can you name an animal that starts with 'A'?",
+        answer: "Alligator, Ant, or Apple!",
+        emoji: "🐊"
+      },
+      {
+        question: "🌟 What letter does your name start with?",
+        answer: "That's special!",
+        emoji: "⭐"
+      },
+      {
+        question: "🎪 Are you ready to learn the alphabet?",
+        answer: "Let's have fun!",
+        emoji: "🎉"
+      }
+    ]
+
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="bg-gradient-to-r from-yellow-400 to-orange-400 rounded-3xl p-6 sm:p-8 mb-8 shadow-lg border-4 border-white/30"
+      >
+        <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6 text-center">
+          👋 Welcome to Alphabet Adventure! 👋
+        </h2>
+        <p className="text-lg sm:text-xl text-white/90 mb-8 text-center">
+          Let's start with some fun questions to get ready for learning!
+        </p>
+        
+        <div className="space-y-4">
+          {introQuestions.map((q, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: index * 0.2 }}
+              className="bg-white/20 backdrop-blur-md rounded-2xl p-4 sm:p-6"
+            >
+              <div className="flex items-center mb-3">
+                <span className="text-2xl sm:text-3xl mr-3">{q.emoji}</span>
+                <h3 className="text-lg sm:text-xl font-bold text-white">
+                  {q.question}
+                </h3>
+              </div>
+              <p className="text-white/90 text-base sm:text-lg ml-12">
+                💡 {q.answer}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+        
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1 }}
+          className="text-center mt-6"
+        >
+          <p className="text-white font-bold text-lg sm:text-xl">
+            🎯 Now let's explore the alphabet together!
+          </p>
+        </motion.div>
+      </motion.div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-400 via-purple-500 to-pink-400 py-8 px-4">
       <div className="max-w-7xl mx-auto">
@@ -688,6 +766,9 @@ const AlphabetLessons = () => {
             Click on any letter to learn its sound and discover exciting words that start with it!
           </p>
         </motion.div>
+
+        {/* Introduction Questions */}
+        {!selectedLetter && renderIntroductionQuestions()}
 
         {/* Alphabet Grid */}
         <motion.div
