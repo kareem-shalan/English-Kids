@@ -1,11 +1,46 @@
-import { useState } from 'react'
-import { motion } from 'framer-motion'
-import { Volume2, RotateCcw, CheckCircle, XCircle } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Volume2, RotateCcw, CheckCircle, XCircle, Star } from 'lucide-react'
 
 const VocabularyPractice = () => {
   const [selectedCategory, setSelectedCategory] = useState(null)
   const [currentWordIndex, setCurrentWordIndex] = useState(0)
   const [showDefinition, setShowDefinition] = useState(false)
+  const [showCongratulations, setShowCongratulations] = useState(false)
+  const [completedWords, setCompletedWords] = useState(new Set())
+
+  // Load state from localStorage on component mount
+  useEffect(() => {
+    const savedSelectedCategory = localStorage.getItem('englishApp_selectedCategory')
+    const savedCurrentWordIndex = localStorage.getItem('englishApp_currentWordIndex')
+    const savedShowDefinition = localStorage.getItem('englishApp_showDefinition')
+    const savedCompletedWords = localStorage.getItem('englishApp_completedWords')
+    
+    if (savedSelectedCategory) {
+      setSelectedCategory(JSON.parse(savedSelectedCategory))
+      setCurrentWordIndex(parseInt(savedCurrentWordIndex) || 0)
+      setShowDefinition(savedShowDefinition === 'true')
+      
+      if (savedCompletedWords) {
+        setCompletedWords(new Set(JSON.parse(savedCompletedWords)))
+      }
+    }
+  }, [])
+
+  // Save state to localStorage whenever it changes
+  useEffect(() => {
+    if (selectedCategory) {
+      localStorage.setItem('englishApp_selectedCategory', JSON.stringify(selectedCategory))
+      localStorage.setItem('englishApp_currentWordIndex', currentWordIndex.toString())
+      localStorage.setItem('englishApp_showDefinition', showDefinition.toString())
+      localStorage.setItem('englishApp_completedWords', JSON.stringify(Array.from(completedWords)))
+    } else {
+      localStorage.removeItem('englishApp_selectedCategory')
+      localStorage.removeItem('englishApp_currentWordIndex')
+      localStorage.removeItem('englishApp_showDefinition')
+      localStorage.removeItem('englishApp_completedWords')
+    }
+  }, [selectedCategory, currentWordIndex, showDefinition, completedWords])
 
       const categories = [
       {
@@ -123,6 +158,40 @@ const VocabularyPractice = () => {
     }
   }
 
+  const markWordComplete = () => {
+    const wordKey = `${selectedCategory.name}-${currentWordIndex}`
+    setCompletedWords(prev => {
+      const newSet = new Set(prev)
+      newSet.add(wordKey)
+      return newSet
+    })
+    setShowCongratulations(true)
+    
+    setTimeout(() => {
+      setShowCongratulations(false)
+    }, 2000)
+  }
+
+  const renderCongratulations = () => {
+    if (!showCongratulations) return null
+
+    return (
+      <motion.div
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0, opacity: 0 }}
+        className="fixed inset-0 flex items-center justify-center z-50"
+      >
+        <div className="bg-gradient-to-r from-green-400 to-green-600 text-white p-8 rounded-3xl shadow-2xl text-center">
+          <div className="text-8xl mb-4">🎉</div>
+          <h2 className="text-4xl font-bold mb-4">Great Job!</h2>
+          <p className="text-2xl">You learned a new word!</p>
+          <div className="text-6xl mt-4">⭐</div>
+        </div>
+      </motion.div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-400 via-purple-500 to-pink-400 py-8 px-4">
       <div className="max-w-6xl mx-auto">
@@ -147,28 +216,49 @@ const VocabularyPractice = () => {
             animate={{ opacity: 1 }}
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
           >
-            {categories.map((category, index) => (
-              <motion.div
-                key={category.name}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-                whileHover={{ scale: 1.05, y: -10 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => {
-                  setSelectedCategory(category)
-                  setCurrentWordIndex(0)
-                  setShowDefinition(false)
-                }}
-                className={`cursor-pointer bg-gradient-to-r ${category.color} rounded-3xl p-8 text-center shadow-xl hover:shadow-2xl transition-all duration-300 border-4 border-white/30`}
-              >
-                <div className="text-6xl mb-4">{category.emoji}</div>
-                <h3 className="text-3xl font-bold text-white mb-4">{category.name}</h3>
-                <p className="text-white/90 text-lg">
-                  {category.words.length} words to learn!
-                </p>
-              </motion.div>
-            ))}
+            {categories.map((category, index) => {
+              const completedCount = category.words.filter((_, wordIndex) => 
+                completedWords.has(`${category.name}-${wordIndex}`)
+              ).length
+              const progressPercentage = Math.round((completedCount / category.words.length) * 100)
+              
+              return (
+                <motion.div
+                  key={category.name}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  whileHover={{ scale: 1.05, y: -10 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => {
+                    setSelectedCategory(category)
+                    setCurrentWordIndex(0)
+                    setShowDefinition(false)
+                  }}
+                  className={`cursor-pointer bg-gradient-to-r ${category.color} rounded-3xl p-8 text-center shadow-xl hover:shadow-2xl transition-all duration-300 border-4 border-white/30`}
+                >
+                  <div className="text-6xl mb-4">{category.emoji}</div>
+                  <h3 className="text-3xl font-bold text-white mb-4">{category.name}</h3>
+                  <p className="text-white/90 text-lg mb-6">
+                    {category.words.length} words to learn!
+                  </p>
+                  
+                  {/* Progress indicator */}
+                  {completedCount > 0 && (
+                    <div className="bg-white/20 rounded-xl p-3 mb-4 text-white">
+                      <div className="text-sm opacity-90">Progress:</div>
+                      <div className="text-lg font-bold">{completedCount}/{category.words.length} words</div>
+                      <div className="w-full bg-white/30 rounded-full h-2 mt-2">
+                        <div 
+                          className="bg-white h-2 rounded-full transition-all duration-300"
+                          style={{ width: `${progressPercentage}%` }}
+                        />
+                      </div>
+                    </div>
+                  )}
+                </motion.div>
+              )
+            })}
           </motion.div>
         ) : (
           /* Flashcard View */
@@ -250,15 +340,26 @@ const VocabularyPractice = () => {
                     <p className="text-2xl text-white/90 mb-8 leading-relaxed">
                       {selectedCategory.words[currentWordIndex].definition}
                     </p>
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      onClick={() => setShowDefinition(false)}
-                      className="bg-white text-gray-800 px-8 py-3 rounded-full font-bold text-lg mx-auto flex items-center"
-                    >
-                      <RotateCcw className="w-5 h-5 mr-2" />
-                      Show Word
-                    </motion.button>
+                    <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={() => setShowDefinition(false)}
+                        className="bg-white text-gray-800 px-8 py-3 rounded-full font-bold text-lg flex items-center justify-center"
+                      >
+                        <RotateCcw className="w-5 h-5 mr-2" />
+                        Show Word
+                      </motion.button>
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={markWordComplete}
+                        className="bg-green-500 text-white px-8 py-3 rounded-full font-bold text-lg flex items-center justify-center"
+                      >
+                        <CheckCircle className="w-5 h-5 mr-2" />
+                        I Know This!
+                      </motion.button>
+                    </div>
                   </>
                 )}
               </div>
@@ -313,6 +414,11 @@ const VocabularyPractice = () => {
             </div>
           </div>
         )}
+
+        {/* Congratulations Overlay */}
+        <AnimatePresence>
+          {renderCongratulations()}
+        </AnimatePresence>
       </div>
     </div>
   )

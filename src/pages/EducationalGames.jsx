@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Volume2, ArrowLeft } from 'lucide-react'
+import { Volume2, ArrowLeft, CheckCircle, XCircle, Star } from 'lucide-react'
 
 const EducationalGames = () => {
   const [selectedGame, setSelectedGame] = useState(null)
@@ -9,6 +9,59 @@ const EducationalGames = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0)
   const [gameData, setGameData] = useState(null)
   const [correctAnswers, setCorrectAnswers] = useState(0)
+  const [showCongratulations, setShowCongratulations] = useState(false)
+  const [lastAnswer, setLastAnswer] = useState(null)
+
+  // Load game state from localStorage on component mount
+  useEffect(() => {
+    const savedGameState = localStorage.getItem('englishApp_gameState')
+    const savedSelectedGame = localStorage.getItem('englishApp_selectedGame')
+    const savedScore = localStorage.getItem('englishApp_gameScore')
+    const savedCurrentQuestion = localStorage.getItem('englishApp_currentQuestion')
+    const savedCorrectAnswers = localStorage.getItem('englishApp_correctAnswers')
+    
+    if (savedGameState && savedSelectedGame) {
+      setGameState(savedGameState)
+      setSelectedGame(JSON.parse(savedSelectedGame))
+      setScore(parseInt(savedScore) || 0)
+      setCurrentQuestion(parseInt(savedCurrentQuestion) || 0)
+      setCorrectAnswers(parseInt(savedCorrectAnswers) || 0)
+      
+      // Load game data based on selected game
+      const game = JSON.parse(savedSelectedGame)
+      switch (game.type) {
+        case 'matching':
+          setGameData(letterMatchingData)
+          break
+        case 'quiz':
+          setGameData(wordQuizData)
+          break
+        case 'sound':
+          setGameData(soundMatchData)
+          break
+        default:
+          setGameData([])
+      }
+    }
+  }, [])
+
+  // Save game state to localStorage whenever it changes
+  useEffect(() => {
+    if (gameState !== 'menu') {
+      localStorage.setItem('englishApp_gameState', gameState)
+      localStorage.setItem('englishApp_selectedGame', JSON.stringify(selectedGame))
+      localStorage.setItem('englishApp_gameScore', score.toString())
+      localStorage.setItem('englishApp_currentQuestion', currentQuestion.toString())
+      localStorage.setItem('englishApp_correctAnswers', correctAnswers.toString())
+    } else {
+      // Clear saved state when returning to menu
+      localStorage.removeItem('englishApp_gameState')
+      localStorage.removeItem('englishApp_selectedGame')
+      localStorage.removeItem('englishApp_gameScore')
+      localStorage.removeItem('englishApp_currentQuestion')
+      localStorage.removeItem('englishApp_correctAnswers')
+    }
+  }, [gameState, selectedGame, score, currentQuestion, correctAnswers])
 
   const games = [
     {
@@ -35,14 +88,14 @@ const EducationalGames = () => {
   ]
 
   const letterMatchingData = [
-    { uppercase: 'A', lowercase: 'a', word: 'Apple', emoji: '🍎' },
-    { uppercase: 'B', lowercase: 'b', word: 'Ball', emoji: '⚽' },
-    { uppercase: 'C', lowercase: 'c', word: 'Cat', emoji: '🐱' },
-    { uppercase: 'D', lowercase: 'd', word: 'Dog', emoji: '🐶' },
-    { uppercase: 'E', lowercase: 'e', word: 'Elephant', emoji: '🐘' },
-    { uppercase: 'F', lowercase: 'f', word: 'Fish', emoji: '🐠' },
-    { uppercase: 'G', lowercase: 'g', word: 'Giraffe', emoji: '🦒' },
-    { uppercase: 'H', lowercase: 'h', word: 'House', emoji: '🏠' }
+    { uppercase: 'A', lowercase: 'a', word: 'Apple', emoji: '🍎', image: '🍎' },
+    { uppercase: 'B', lowercase: 'b', word: 'Ball', emoji: '⚽', image: '⚽' },
+    { uppercase: 'C', lowercase: 'c', word: 'Cat', emoji: '🐱', image: '🐱' },
+    { uppercase: 'D', lowercase: 'd', word: 'Dog', emoji: '🐶', image: '🐶' },
+    { uppercase: 'E', lowercase: 'e', word: 'Elephant', emoji: '🐘', image: '🐘' },
+    { uppercase: 'F', lowercase: 'f', word: 'Fish', emoji: '🐠', image: '🐠' },
+    { uppercase: 'G', lowercase: 'g', word: 'Giraffe', emoji: '🦒', image: '🦒' },
+    { uppercase: 'H', lowercase: 'h', word: 'House', emoji: '🏠', image: '🏠' }
   ]
 
   const wordQuizData = [
@@ -121,6 +174,8 @@ const EducationalGames = () => {
     setScore(0)
     setCurrentQuestion(0)
     setCorrectAnswers(0)
+    setShowCongratulations(false)
+    setLastAnswer(null)
     setGameState('playing')
 
     switch (game.type) {
@@ -157,16 +212,33 @@ const EducationalGames = () => {
       isCorrect = answer === currentData.correct
     }
 
+    setLastAnswer({ answer, isCorrect })
+
     if (isCorrect) {
       setScore(score + 10)
       setCorrectAnswers(correctAnswers + 1)
+      setShowCongratulations(true)
+      
+      // Hide congratulations after 2 seconds
+      setTimeout(() => {
+        setShowCongratulations(false)
+        setLastAnswer(null)
+      }, 2000)
+    } else {
+      // Show incorrect feedback briefly
+      setTimeout(() => {
+        setLastAnswer(null)
+      }, 1000)
     }
 
-    if (currentQuestion < gameData.length - 1) {
-      setCurrentQuestion(currentQuestion + 1)
-    } else {
-      setGameState('finished')
-    }
+    // Move to next question after a delay
+    setTimeout(() => {
+      if (currentQuestion < gameData.length - 1) {
+        setCurrentQuestion(currentQuestion + 1)
+      } else {
+        setGameState('finished')
+      }
+    }, isCorrect ? 2000 : 1000)
   }
 
   const resetGame = () => {
@@ -175,6 +247,28 @@ const EducationalGames = () => {
     setScore(0)
     setCurrentQuestion(0)
     setCorrectAnswers(0)
+    setShowCongratulations(false)
+    setLastAnswer(null)
+  }
+
+  const renderCongratulations = () => {
+    if (!showCongratulations) return null
+
+    return (
+      <motion.div
+        initial={{ scale: 0, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0, opacity: 0 }}
+        className="fixed inset-0 flex items-center justify-center z-50"
+      >
+        <div className="bg-gradient-to-r from-green-400 to-green-600 text-white p-8 rounded-3xl shadow-2xl text-center">
+          <div className="text-8xl mb-4">🎉</div>
+          <h2 className="text-4xl font-bold mb-4">Excellent!</h2>
+          <p className="text-2xl">You got it right!</p>
+          <div className="text-6xl mt-4">⭐</div>
+        </div>
+      </motion.div>
+    )
   }
 
   const renderGameContent = () => {
@@ -186,7 +280,7 @@ const EducationalGames = () => {
       case 'matching':
         return (
           <div className="text-center">
-            <div className="text-8xl mb-8">{currentData.emoji}</div>
+            <div className="text-8xl mb-8">{currentData.image}</div>
             <h2 className="text-6xl font-bold text-white mb-8">{currentData.uppercase}</h2>
             <p className="text-2xl text-white/90 mb-8">Find the lowercase letter for "{currentData.uppercase}"</p>
             
@@ -197,7 +291,14 @@ const EducationalGames = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => handleAnswer(letter)}
-                  className="bg-white text-gray-800 text-4xl font-bold p-6 rounded-2xl hover:bg-gray-100 transition-all duration-200"
+                  disabled={lastAnswer !== null}
+                  className={`text-4xl font-bold p-6 rounded-2xl transition-all duration-200 ${
+                    lastAnswer?.answer === letter
+                      ? lastAnswer.isCorrect
+                        ? 'bg-green-500 text-white'
+                        : 'bg-red-500 text-white'
+                      : 'bg-white text-gray-800 hover:bg-gray-100'
+                  }`}
                 >
                   {letter}
                 </motion.button>
@@ -219,7 +320,14 @@ const EducationalGames = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => handleAnswer(option)}
-                  className="bg-white text-gray-800 text-xl font-bold p-6 rounded-2xl hover:bg-gray-100 transition-all duration-200"
+                  disabled={lastAnswer !== null}
+                  className={`text-xl font-bold p-6 rounded-2xl transition-all duration-200 ${
+                    lastAnswer?.answer === option
+                      ? lastAnswer.isCorrect
+                        ? 'bg-green-500 text-white'
+                        : 'bg-red-500 text-white'
+                      : 'bg-white text-gray-800 hover:bg-gray-100'
+                  }`}
                 >
                   {option}
                 </motion.button>
@@ -252,7 +360,14 @@ const EducationalGames = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => handleAnswer(option)}
-                  className="bg-white text-gray-800 text-xl font-bold p-6 rounded-2xl hover:bg-gray-100 transition-all duration-200"
+                  disabled={lastAnswer !== null}
+                  className={`text-xl font-bold p-6 rounded-2xl transition-all duration-200 ${
+                    lastAnswer?.answer === option
+                      ? lastAnswer.isCorrect
+                        ? 'bg-green-500 text-white'
+                        : 'bg-red-500 text-white'
+                      : 'bg-white text-gray-800 hover:bg-gray-100'
+                  }`}
                 >
                   {option}
                 </motion.button>
@@ -427,6 +542,11 @@ const EducationalGames = () => {
             </p>
           </motion.div>
         )}
+
+        {/* Congratulations Overlay */}
+        <AnimatePresence>
+          {renderCongratulations()}
+        </AnimatePresence>
       </div>
     </div>
   )
