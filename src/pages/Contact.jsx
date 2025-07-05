@@ -29,6 +29,19 @@ const Contact = () => {
             <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">
               Contact Information
             </h2>
+            
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              className="flex items-center p-4 bg-gradient-to-r from-yellow-100 to-orange-100 rounded-2xl mb-6"
+            >
+              <div className="w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center mr-4">
+                <MessageCircle className="w-6 h-6 text-white" />
+              </div>
+              <div>
+                <h3 className="font-bold text-gray-800">Developer</h3>
+                <p className="text-gray-600">Kareem Shalan</p>
+              </div>
+            </motion.div>
 
             <div className="space-y-6">
               <motion.div
@@ -40,7 +53,7 @@ const Contact = () => {
                 </div>
                 <div>
                   <h3 className="font-bold text-gray-800">Email</h3>
-                  <p className="text-gray-600">hello@englishfun.com</p>
+                  <p className="text-gray-600">kareemmohamedali330@gmail.com</p>
                 </div>
               </motion.div>
 
@@ -53,7 +66,7 @@ const Contact = () => {
                 </div>
                 <div>
                   <h3 className="font-bold text-gray-800">Phone</h3>
-                  <p className="text-gray-600">+1 (555) 123-KIDS</p>
+                  <p className="text-gray-600">01272958197</p>
                 </div>
               </motion.div>
 
