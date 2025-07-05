@@ -35,13 +35,13 @@ const AlphabetLessons = () => {
     }
   }, [selectedLetter, currentLetterIndex, showMissingLetters])
 
-      const alphabetData = [
-      {
-        letter: 'A',
-        sound: '/eɪ/',
-        phonics: 'ay',
+  const alphabetData = [
+    {
+      letter: 'A',
+      sound: '/eɪ/',
+      phonics: 'ay',
         words: ['Apple 🍎', 'Ant 🐜', 'Airplane ✈️', 'Alligator 🐊', 'Arrow 🏹', 'Angel 😇'],
-        color: 'from-red-400 to-red-600',
+      color: 'from-red-400 to-red-600',
         emoji: '🍎',
         image: '🍎',
         description: 'A is for Apple - a sweet red fruit!',
@@ -51,13 +51,13 @@ const AlphabetLessons = () => {
           { word: 'B_T', answer: 'A', fullWord: 'BAT', emoji: '🏏' },
           { word: 'M_T', answer: 'A', fullWord: 'MAT', emoji: '🏐' }
         ]
-      },
-      {
-        letter: 'B',
-        sound: '/biː/',
-        phonics: 'bee',
+    },
+    {
+      letter: 'B',
+      sound: '/biː/',
+      phonics: 'bee',
         words: ['Ball ⚽', 'Bear 🐻', 'Banana 🍌', 'Butterfly 🦋', 'Book 📚', 'Bird 🐦'],
-        color: 'from-blue-400 to-blue-600',
+      color: 'from-blue-400 to-blue-600',
         emoji: '⚽',
         image: '⚽',
         description: 'B is for Ball - let\'s play and have fun!',
@@ -67,13 +67,13 @@ const AlphabetLessons = () => {
           { word: 'E_R', answer: 'B', fullWord: 'BEAR', emoji: '🐻' },
           { word: 'A_G', answer: 'B', fullWord: 'BAG', emoji: '👜' }
         ]
-      },
-      {
-        letter: 'C',
-        sound: '/siː/',
-        phonics: 'see',
+    },
+    {
+      letter: 'C',
+      sound: '/siː/',
+      phonics: 'see',
         words: ['Cat 🐱', 'Car 🚗', 'Cake 🎂', 'Crown 👑', 'Clock 🕐', 'Cloud ☁️'],
-        color: 'from-green-400 to-green-600',
+      color: 'from-green-400 to-green-600',
         emoji: '🐱',
         image: '🐱',
         description: 'C is for Cat - a furry friend that purrs!',
@@ -83,13 +83,13 @@ const AlphabetLessons = () => {
           { word: 'A_K', answer: 'C', fullWord: 'CAKE', emoji: '🎂' },
           { word: 'O_W', answer: 'C', fullWord: 'COW', emoji: '🐮' }
         ]
-      },
-      {
-        letter: 'D',
-        sound: '/diː/',
-        phonics: 'dee',
+    },
+    {
+      letter: 'D',
+      sound: '/diː/',
+      phonics: 'dee',
         words: ['Dog 🐶', 'Duck 🦆', 'Drum 🥁', 'Diamond 💎', 'Door 🚪', 'Dinosaur 🦕'],
-        color: 'from-yellow-400 to-yellow-600',
+      color: 'from-yellow-400 to-yellow-600',
         emoji: '🐶',
         image: '🐶',
         description: 'D is for Dog - man\'s best friend!',
@@ -99,13 +99,13 @@ const AlphabetLessons = () => {
           { word: 'O_OR', answer: 'D', fullWord: 'DOOR', emoji: '🚪' },
           { word: 'A_Y', answer: 'D', fullWord: 'DAY', emoji: '☀️' }
         ]
-      },
-      {
-        letter: 'E',
-        sound: '/iː/',
-        phonics: 'ee',
+    },
+    {
+      letter: 'E',
+      sound: '/iː/',
+      phonics: 'ee',
         words: ['Elephant 🐘', 'Egg 🥚', 'Eagle 🦅', 'Earth 🌍', 'Eye 👁️', 'Ear 👂'],
-        color: 'from-purple-400 to-purple-600',
+      color: 'from-purple-400 to-purple-600',
         emoji: '🐘',
         image: '🐘',
         description: 'E is for Elephant - the biggest land animal!',
@@ -115,13 +115,13 @@ const AlphabetLessons = () => {
           { word: 'A_R', answer: 'E', fullWord: 'EAR', emoji: '👂' },
           { word: 'T_N', answer: 'E', fullWord: 'TEN', emoji: '🔟' }
         ]
-      },
-      {
-        letter: 'F',
-        sound: '/ɛf/',
-        phonics: 'eff',
+    },
+    {
+      letter: 'F',
+      sound: '/ɛf/',
+      phonics: 'eff',
         words: ['Fish 🐠', 'Frog 🐸', 'Fire 🔥', 'Flower 🌸', 'Flag 🏳️', 'Fox 🦊'],
-        color: 'from-pink-400 to-pink-600',
+      color: 'from-pink-400 to-pink-600',
         emoji: '🐠',
         image: '🐠',
         description: 'F is for Fish - swimming in the water!',
@@ -451,8 +451,8 @@ const AlphabetLessons = () => {
           { word: 'E_RO', answer: 'Z', fullWord: 'ZERO', emoji: '0️⃣' },
           { word: 'I_P', answer: 'Z', fullWord: 'ZIP', emoji: '🤐' }
         ]
-      }
-    ]
+    }
+  ]
 
   const playSound = (phonics) => {
     if ('speechSynthesis' in window) {
@@ -466,7 +466,7 @@ const AlphabetLessons = () => {
   const playMissingLetterSound = (word, missingLetter) => {
     const fullWord = word.replace('_', missingLetter)
     if ('speechSynthesis' in window) {
-      const utterance = new SpeechSynthesisUtterance(`The missing letter is ${missingLetter}. ${fullWord}`)
+      const utterance = new SpeechSynthesisUtterance(fullWord)
       utterance.rate = 0.8
       utterance.pitch = 1.1
       speechSynthesis.speak(utterance)
@@ -543,7 +543,7 @@ const AlphabetLessons = () => {
                   className="bg-white/20 backdrop-blur-md text-white px-6 py-3 rounded-full font-bold text-lg mb-4 mx-auto flex items-center"
                 >
                   <Volume2 className="w-5 h-5 mr-2" />
-                  Listen & Find Missing Letter
+                  Listen to Word
                 </motion.button>
                 
                 <div className="grid grid-cols-3 gap-3">
