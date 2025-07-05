@@ -750,6 +750,103 @@ const AlphabetLessons = () => {
     )
   }
 
+  const renderCapitalSmallLetters = () => {
+    const letterPairs = [
+      { capital: 'A', small: 'a', word: 'Apple', emoji: '🍎' },
+      { capital: 'B', small: 'b', word: 'Ball', emoji: '⚽' },
+      { capital: 'C', small: 'c', word: 'Cat', emoji: '🐱' },
+      { capital: 'D', small: 'd', word: 'Dog', emoji: '🐶' },
+      { capital: 'E', small: 'e', word: 'Elephant', emoji: '🐘' },
+      { capital: 'F', small: 'f', word: 'Fish', emoji: '🐠' },
+      { capital: 'G', small: 'g', word: 'Giraffe', emoji: '🦒' },
+      { capital: 'H', small: 'h', word: 'House', emoji: '🏠' },
+      { capital: 'I', small: 'i', word: 'Ice cream', emoji: '🍦' },
+      { capital: 'J', small: 'j', word: 'Juice', emoji: '🧃' },
+      { capital: 'K', small: 'k', word: 'Kite', emoji: '🪁' },
+      { capital: 'L', small: 'l', word: 'Lion', emoji: '🦁' },
+      { capital: 'M', small: 'm', word: 'Moon', emoji: '🌙' },
+      { capital: 'N', small: 'n', word: 'Nest', emoji: '🪺' },
+      { capital: 'O', small: 'o', word: 'Ocean', emoji: '🌊' },
+      { capital: 'P', small: 'p', word: 'Penguin', emoji: '🐧' },
+      { capital: 'Q', small: 'q', word: 'Queen', emoji: '👸' },
+      { capital: 'R', small: 'r', word: 'Rabbit', emoji: '🐰' },
+      { capital: 'S', small: 's', word: 'Sun', emoji: '☀️' },
+      { capital: 'T', small: 't', word: 'Tiger', emoji: '🐅' },
+      { capital: 'U', small: 'u', word: 'Umbrella', emoji: '☂️' },
+      { capital: 'V', small: 'v', word: 'Violin', emoji: '🎻' },
+      { capital: 'W', small: 'w', word: 'Whale', emoji: '🐋' },
+      { capital: 'X', small: 'x', word: 'X-ray', emoji: '🩻' },
+      { capital: 'Y', small: 'y', word: 'Yellow', emoji: '💛' },
+      { capital: 'Z', small: 'z', word: 'Zebra', emoji: '🦓' }
+    ]
+
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="bg-gradient-to-r from-green-400 to-blue-400 rounded-3xl p-6 sm:p-8 mb-8 shadow-lg border-4 border-white/30"
+      >
+        <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6 text-center">
+          🔤 Capital & Small Letters! 🔤
+        </h2>
+        <p className="text-lg sm:text-xl text-white/90 mb-8 text-center">
+          Learn the difference between BIG and small letters!
+        </p>
+        
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {letterPairs.map((pair, index) => (
+            <motion.div
+              key={pair.capital}
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: index * 0.05 }}
+              whileHover={{ scale: 1.05, y: -5 }}
+              onClick={() => playSound(pair.word)}
+              className="bg-white/20 backdrop-blur-md rounded-2xl p-4 cursor-pointer shadow-lg hover:shadow-xl transition-all duration-300"
+            >
+              <div className="text-center">
+                <div className="text-3xl mb-2">{pair.emoji}</div>
+                <div className="flex justify-center items-center space-x-4 mb-3">
+                  <div className="text-4xl font-bold text-white bg-red-500 rounded-full w-16 h-16 flex items-center justify-center">
+                    {pair.capital}
+                  </div>
+                  <div className="text-2xl text-white">→</div>
+                  <div className="text-4xl font-bold text-white bg-blue-500 rounded-full w-16 h-16 flex items-center justify-center">
+                    {pair.small}
+                  </div>
+                </div>
+                <div className="text-lg font-bold text-white">
+                  {pair.word}
+                </div>
+                <div className="text-sm text-white/80 mt-2">
+                  Click to hear!
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+        
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.5 }}
+          className="text-center mt-6"
+        >
+          <div className="bg-white/20 backdrop-blur-md rounded-2xl p-4">
+            <h3 className="text-xl font-bold text-white mb-2">
+              💡 Did you know?
+            </h3>
+            <p className="text-white/90">
+              Capital letters are BIG and used at the start of sentences and names!
+              <br />
+              Small letters are used in the middle and end of words.
+            </p>
+          </div>
+        </motion.div>
+      </motion.div>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-400 via-purple-500 to-pink-400 py-8 px-4">
       <div className="max-w-7xl mx-auto">
@@ -769,6 +866,9 @@ const AlphabetLessons = () => {
 
         {/* Introduction Questions */}
         {!selectedLetter && renderIntroductionQuestions()}
+
+        {/* Capital & Small Letters Section */}
+        {!selectedLetter && renderCapitalSmallLetters()}
 
         {/* Alphabet Grid */}
         <motion.div
@@ -934,6 +1034,9 @@ const AlphabetLessons = () => {
             </div>
           </motion.div>
         )}
+
+        {/* Capital & Small Letters Section */}
+        {renderCapitalSmallLetters()}
       </div>
     </div>
   )
