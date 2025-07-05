@@ -867,8 +867,7 @@ const AlphabetLessons = () => {
         {/* Introduction Questions */}
         {!selectedLetter && renderIntroductionQuestions()}
 
-        {/* Capital & Small Letters Section */}
-        {!selectedLetter && renderCapitalSmallLetters()}
+
 
         {/* Alphabet Grid */}
         <motion.div
@@ -888,9 +887,16 @@ const AlphabetLessons = () => {
               }}
               className={`relative cursor-pointer bg-gradient-to-r ${letterData.color} rounded-2xl p-4 sm:p-6 text-center shadow-lg hover:shadow-xl transition-all duration-300 border-4 border-white/30`}
             >
-              <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-2">
+              {/* Capital Letter */}
+              <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-1">
                 {letterData.letter}
               </div>
+              
+              {/* Small Letter */}
+              <div className="text-xl sm:text-2xl md:text-3xl font-bold text-white/80 mb-2">
+                {letterData.letter.toLowerCase()}
+              </div>
+              
               <div className="text-xl sm:text-2xl">{letterData.image}</div>
               
               {selectedLetter?.letter === letterData.letter && (
