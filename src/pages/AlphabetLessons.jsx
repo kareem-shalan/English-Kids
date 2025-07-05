@@ -62,10 +62,10 @@ const AlphabetLessons = () => {
       image: '⚽',
       description: 'B is for Ball - let\'s play and have fun!',
       missingLetterWords: [
-        { word: 'B_OK', answer: 'O', fullWord: 'BOOK', emoji: '📚' },
-        { word: 'B_IRD', answer: 'I', fullWord: 'BIRD', emoji: '🐦' },
-        { word: 'B_EAR', answer: 'E', fullWord: 'BEAR', emoji: '🐻' },
-        { word: 'B_AG', answer: 'A', fullWord: 'BAG', emoji: '��' }
+        { word: 'BO_K', answer: 'O', fullWord: 'BOOK', emoji: '📚' },
+        { word: 'BI_D', answer: 'R', fullWord: 'BIRD', emoji: '🐦' },
+        { word: 'BEA_', answer: 'R', fullWord: 'BEAR', emoji: '🐻' },
+        { word: 'BA_', answer: 'G', fullWord: 'BAG', emoji: '👜' }
       ]
     },
     {
@@ -78,10 +78,10 @@ const AlphabetLessons = () => {
       image: '🐱',
       description: 'C is for Cat - a furry friend that purrs!',
       missingLetterWords: [
-        { word: 'C_AT', answer: 'A', fullWord: 'CAT', emoji: '🐱' },
-        { word: 'C_AR', answer: 'A', fullWord: 'CAR', emoji: '🚗' },
-        { word: 'C_AKE', answer: 'A', fullWord: 'CAKE', emoji: '🎂' },
-        { word: 'C_OW', answer: 'O', fullWord: 'COW', emoji: '🐮' }
+        { word: 'CA_', answer: 'T', fullWord: 'CAT', emoji: '🐱' },
+        { word: 'C_R', answer: 'A', fullWord: 'CAR', emoji: '🚗' },
+        { word: 'CA_E', answer: 'K', fullWord: 'CAKE', emoji: '🎂' },
+        { word: 'CO_', answer: 'W', fullWord: 'COW', emoji: '🐮' }
       ]
     },
     {
@@ -94,10 +94,10 @@ const AlphabetLessons = () => {
       image: '🐶',
       description: 'D is for Dog - man\'s best friend!',
       missingLetterWords: [
-        { word: 'O_G', answer: 'D', fullWord: 'DOG', emoji: '🐶' },
-        { word: 'U_CK', answer: 'D', fullWord: 'DUCK', emoji: '🦆' },
-        { word: 'O_OR', answer: 'D', fullWord: 'DOOR', emoji: '🚪' },
-        { word: 'A_Y', answer: 'D', fullWord: 'DAY', emoji: '☀️' }
+        { word: 'DO_', answer: 'G', fullWord: 'DOG', emoji: '🐶' },
+        { word: 'DU_K', answer: 'C', fullWord: 'DUCK', emoji: '🦆' },
+        { word: 'DOO_', answer: 'R', fullWord: 'DOOR', emoji: '🚪' },
+        { word: 'DA_', answer: 'Y', fullWord: 'DAY', emoji: '☀️' }
       ]
     },
     {
